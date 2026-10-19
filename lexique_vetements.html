@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Les parties d'un vêtement</title>
+<style>
+  :root{
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+    --bg:#f5f6f9; --panel:#fff; --ink:#15181e; --muted:#5e6472; --line:#d8dce4;
+    --navy:#1F3864; --navy2:#2E5395; --accent:#c0392b; --accentbg:#f6d7d2;
+    --cloth:#dfe6f2; --cloth2:#c9d4e8; --line2:#6b7a93;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#13161b; --panel:#1b1f26; --ink:#ecedf1; --muted:#a2aab9; --line:#2b3039;
+      --navy:#a3b8dc; --navy2:#90a8d2; --accent:#ef8278; --accentbg:#4a2824;
+      --cloth:#2c3545; --cloth2:#3a4557; --line2:#9babc4;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#13161b; --panel:#1b1f26; --ink:#ecedf1; --muted:#a2aab9; --line:#2b3039;
+    --navy:#a3b8dc; --navy2:#90a8d2; --accent:#ef8278; --accentbg:#4a2824;
+    --cloth:#2c3545; --cloth2:#3a4557; --line2:#9babc4;
+  }
+  *,*::before,*::after{box-sizing:inherit}
+  html{scroll-padding-top:env(safe-area-inset-top,0px)}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:Georgia,"Times New Roman",serif;line-height:1.5;padding:18px 14px 46px}
+  .wrap{max-width:720px;margin:0 auto}
+  header{text-align:center;margin-bottom:6px}
+  h1{font-size:1.45rem;color:var(--navy);margin:0 0 4px}
+  .sub{margin:0;color:var(--muted);font-style:italic;font-size:.92rem}
+  h2{font-size:1.1rem;color:var(--navy2);margin:30px 0 10px;border-bottom:1px solid var(--line);padding-bottom:5px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
+  svg{display:block;width:100%;height:auto;max-width:360px;margin:0 auto;overflow:visible}
+  .cloth{fill:var(--cloth);stroke:var(--line2);stroke-width:2.5}
+  .cloth2{fill:var(--cloth2);stroke:var(--line2);stroke-width:2.5}
+  .det{fill:none;stroke:var(--line2);stroke-width:2.5}
+  .part{transition:fill .2s, stroke .2s}
+  .part.hl{fill:var(--accentbg);stroke:var(--accent);stroke-width:4}
+  .num{font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:bold;fill:#fff}
+  .numbg{fill:var(--navy2)}
+  ol.leg{margin:10px 0 0;padding-left:0;list-style:none;
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:4px 14px}
+  ol.leg li{font-size:.95rem;padding:3px 0;border-bottom:1px dotted var(--line)}
+  ol.leg b{color:var(--navy2)}
+  ol.leg span{color:var(--muted);font-size:.88rem}
+  .note{font-size:.9rem;color:var(--muted);font-style:italic;margin-top:10px}
+  .quiz{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px}
+  .opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:9px;margin-top:12px}
+  button{font-family:inherit;font-size:.97rem;padding:11px 12px;border-radius:9px;
+    border:1px solid var(--navy2);background:transparent;color:var(--navy2);cursor:pointer;text-align:center}
+  button:hover{background:var(--accentbg)}
+  button.ok{background:#2e7d32;border-color:#2e7d32;color:#fff}
+  button.no{background:var(--accent);border-color:var(--accent);color:#fff}
+  button:disabled{cursor:default;opacity:.95}
+  .bar{display:flex;justify-content:space-between;align-items:center;font-size:.9rem;color:var(--muted);margin-bottom:6px}
+  .feedback{min-height:1.6em;margin-top:11px;font-style:italic;color:var(--navy2)}
+  .ctrl{margin-top:12px;display:flex;gap:9px;flex-wrap:wrap}
+  .ctrl button{background:var(--navy2);color:#fff}
+  footer{margin-top:26px;text-align:center;color:var(--muted);font-size:.8rem;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Les parties d'un vêtement</h1>
+  <p class="sub">Séance 4 — Mode · vocabulaire illustré et exercice</p>
+</header>
+
+<h2>1. Le manteau</h2>
+<div class="card">
+<svg id="svgManteau" viewBox="0 0 360 500" xmlns="http://www.w3.org/2000/svg" aria-label="Schéma d'un manteau">
+  <!-- manches -->
+  <path id="m-manche" class="cloth part" d="M118,112 L74,134 L54,330 L96,342 L116,190 Z"/>
+  <path class="cloth part" d="M242,112 L286,134 L306,330 L264,342 L244,190 Z"/>
+  <!-- corps -->
+  <path class="cloth" d="M118,110 L242,110 L266,452 L94,452 Z"/>
+  <!-- col : pied de col derrière la nuque -->
+  <path id="m-col" class="cloth2 part" d="M150,112 L157,99 L203,99 L210,112 Z"/>
+  <!-- revers : larges, à plat sur la poitrine -->
+  <path id="m-revers" class="cloth2 part" d="M152,110 L126,113 L134,150 L152,200 L180,140 Z"/>
+  <path class="cloth2 part" d="M208,110 L234,113 L226,150 L208,200 L180,140 Z"/>
+  <path class="det" d="M134,150 L152,146"/>
+  <path class="det" d="M226,150 L208,146"/>
+  <!-- ceinture -->
+  <rect id="m-ceinture" class="cloth2 part" x="94" y="276" width="172" height="24"/>
+  <rect class="det" x="168" y="272" width="30" height="32"/>
+  <!-- boutons -->
+  <circle id="m-bouton" class="cloth2 part" cx="158" cy="228" r="8"/>
+  <circle class="cloth2 part" cx="202" cy="228" r="8"/>
+  <circle class="cloth2 part" cx="158" cy="258" r="8"/>
+  <circle class="cloth2 part" cx="202" cy="258" r="8"/>
+  <!-- poches -->
+  <rect id="m-poche" class="cloth2 part" x="108" y="318" width="56" height="42" rx="4"/>
+  <rect class="cloth2 part" x="196" y="318" width="56" height="42" rx="4"/>
+  <!-- ourlet -->
+  <path id="m-ourlet" class="part" d="M94,452 L266,452" fill="none" stroke="var(--line2)" stroke-width="7"/>
+  <!-- doublure : pan replié -->
+  <path id="m-doublure" class="part" d="M266,452 L224,452 L238,392 L270,414 Z" fill="var(--cloth2)" stroke="var(--line2)" stroke-width="2.5"/>
+  <!-- numéros -->
+  <g><circle class="numbg" cx="180" cy="84" r="13"/><text class="num" x="180" y="90" text-anchor="middle">1</text></g>
+  <g><circle class="numbg" cx="112" cy="146" r="13"/><text class="num" x="112" y="152" text-anchor="middle">2</text></g>
+  <g><circle class="numbg" cx="232" cy="232" r="13"/><text class="num" x="232" y="238" text-anchor="middle">3</text></g>
+  <g><circle class="numbg" cx="78" cy="288" r="13"/><text class="num" x="78" y="294" text-anchor="middle">4</text></g>
+  <g><circle class="numbg" cx="136" cy="378" r="13"/><text class="num" x="136" y="384" text-anchor="middle">5</text></g>
+  <g><circle class="numbg" cx="60" cy="238" r="13"/><text class="num" x="60" y="244" text-anchor="middle">6</text></g>
+  <g><circle class="numbg" cx="108" cy="472" r="13"/><text class="num" x="108" y="478" text-anchor="middle">7</text></g>
+  <g><circle class="numbg" cx="292" cy="424" r="13"/><text class="num" x="292" y="430" text-anchor="middle">8</text></g>
+</svg>
+<ol class="leg">
+  <li>1 — <b>le col</b> <span>· воротник</span></li>
+  <li>2 — <b>le revers</b> <span>· лацкан</span></li>
+  <li>3 — <b>le bouton</b> <span>· пуговица</span></li>
+  <li>4 — <b>la ceinture</b> <span>· пояс</span></li>
+  <li>5 — <b>la poche</b> <span>· карман</span></li>
+  <li>6 — <b>la manche</b> <span>· рукав</span></li>
+  <li>7 — <b>l'ourlet</b> <span>· подол, подгиб</span></li>
+  <li>8 — <b>la doublure</b> <span>· подкладка</span></li>
+</ol>
+<p class="note">Ce manteau est <b>croisé</b> (deux rangées de boutons). Quand il n'y a qu'une rangée, il est <b>droit</b>.</p>
+</div>
+
+<h2>2. La veste</h2>
+<div class="card">
+<svg id="svgVeste" viewBox="0 0 360 450" xmlns="http://www.w3.org/2000/svg" aria-label="Schéma d'une veste">
+  <!-- capuche -->
+  <path id="v-capuche" class="cloth part" d="M112,116 C108,36 252,36 248,116 Z"/>
+  <path class="part" d="M142,116 C140,66 220,66 218,116 Z" fill="#9fb0cc" stroke="var(--line2)" stroke-width="2.5"/>
+  <!-- manches -->
+  <path class="cloth part" d="M122,112 L80,134 L62,300 L104,312 L120,190 Z"/>
+  <path id="v-manche" class="cloth part" d="M238,112 L280,134 L298,300 L256,312 L240,190 Z"/>
+  <!-- poignets -->
+  <rect id="v-poignet" class="cloth2 part" x="60" y="296" width="48" height="22" rx="5"/>
+  <rect class="cloth2 part" x="252" y="296" width="48" height="22" rx="5"/>
+  <!-- corps -->
+  <path class="cloth" d="M122,110 L238,110 L252,386 L108,386 Z"/>
+  <circle class="part" cx="168" cy="126" r="5" fill="var(--cloth2)" stroke="var(--line2)" stroke-width="2"/>
+  <circle class="part" cx="192" cy="126" r="5" fill="var(--cloth2)" stroke="var(--line2)" stroke-width="2"/>
+  <path class="det" d="M168,131 C170,146 174,154 176,160"/>
+  <path class="det" d="M192,131 C190,146 186,154 184,160"/>
+  <!-- fermeture éclair -->
+  <line id="v-zip" class="part" x1="180" y1="112" x2="180" y2="384" stroke="var(--line2)" stroke-width="7" stroke-dasharray="9 7"/>
+  <!-- poches -->
+  <rect id="v-poche" class="cloth2 part" x="118" y="296" width="52" height="38" rx="4"/>
+  <rect class="cloth2 part" x="190" y="296" width="52" height="38" rx="4"/>
+  <!-- rivets -->
+  <circle id="v-rivet" class="part" cx="128" cy="292" r="6" fill="var(--cloth2)" stroke="var(--line2)" stroke-width="2.5"/>
+  <circle class="part" cx="232" cy="292" r="6" fill="var(--cloth2)" stroke="var(--line2)" stroke-width="2.5"/>
+  <g><circle class="numbg" cx="180" cy="22" r="13"/><text class="num" x="180" y="28" text-anchor="middle">1</text></g>
+  <g><circle class="numbg" cx="212" cy="226" r="13"/><text class="num" x="212" y="232" text-anchor="middle">2</text></g>
+  <g><circle class="numbg" cx="316" cy="306" r="13"/><text class="num" x="316" y="312" text-anchor="middle">3</text></g>
+  <g><circle class="numbg" cx="142" cy="352" r="13"/><text class="num" x="142" y="358" text-anchor="middle">4</text></g>
+  <g><circle class="numbg" cx="104" cy="272" r="13"/><text class="num" x="104" y="278" text-anchor="middle">5</text></g>
+</svg>
+<ol class="leg">
+  <li>1 — <b>la capuche</b> <span>· капюшон</span></li>
+  <li>2 — <b>la fermeture éclair</b> <span>· молния</span></li>
+  <li>3 — <b>le poignet</b> <span>· манжета</span></li>
+  <li>4 — <b>la poche</b> <span>· карман</span></li>
+  <li>5 — <b>le rivet</b> <span>· заклёпка</span></li>
+</ol>
+<p class="note">On dit aussi : <b>fermer / ouvrir la fermeture éclair</b>, et familièrement <b>le zip</b>.</p>
+</div>
+
+<h2>3. La chaussure</h2>
+<div class="card">
+<svg id="svgChaussure" viewBox="0 0 360 250" xmlns="http://www.w3.org/2000/svg" aria-label="Schéma d'une chaussure">
+  <!-- tige -->
+  <path class="cloth" d="M70,84 C70,64 82,54 100,54 L138,54 C151,54 158,62 158,74
+           L158,118 C182,128 212,138 248,146
+           C274,151 292,157 299,167 C305,177 303,191 290,191
+           L78,191 C72,191 70,187 70,181 Z"/>
+  <!-- ouverture -->
+  <path class="det" d="M72,82 C92,70 140,68 157,78"/>
+  <!-- languette -->
+  <path id="c-languette" class="cloth2 part" d="M124,70 L152,66 L156,116 L128,120 Z"/>
+  <!-- lacets -->
+  <g id="c-lacets" class="part" fill="none" stroke="var(--line2)" stroke-width="3.5">
+    <path d="M126,80 L152,76"/><path d="M127,99 L153,95"/><path d="M128,116 L154,112"/>
+    <path d="M126,80 L153,95"/><path d="M127,99 L154,112"/>
+    <path d="M152,76 L127,99"/><path d="M153,95 L128,116"/>
+  </g>
+  <!-- oeillets -->
+  <circle id="c-oeillet" class="part" cx="126" cy="80" r="5" fill="var(--panel)" stroke="var(--line2)" stroke-width="2.5"/>
+  <circle class="part" cx="127" cy="99" r="5" fill="var(--panel)" stroke="var(--line2)" stroke-width="2.5"/>
+  <circle class="part" cx="128" cy="116" r="5" fill="var(--panel)" stroke="var(--line2)" stroke-width="2.5"/>
+  <circle class="part" cx="152" cy="76" r="5" fill="var(--panel)" stroke="var(--line2)" stroke-width="2.5"/>
+  <circle class="part" cx="153" cy="95" r="5" fill="var(--panel)" stroke="var(--line2)" stroke-width="2.5"/>
+  <circle class="part" cx="154" cy="112" r="5" fill="var(--panel)" stroke="var(--line2)" stroke-width="2.5"/>
+  <!-- bout -->
+  <path id="c-bout" class="cloth2 part" d="M250,146 C274,151 292,157 299,167 C305,177 303,191 290,191 L242,191 Z"/>
+  <!-- semelle -->
+  <path id="c-semelle" class="cloth2 part" d="M64,191 L296,191 C308,191 312,199 308,206 L68,206 C57,206 55,195 64,191 Z"/>
+  <!-- talon -->
+  <rect id="c-talon" class="cloth2 part" x="64" y="206" width="58" height="19" rx="3"/>
+  <!-- numeros -->
+  <g><circle class="numbg" cx="316" cy="140" r="13"/><text class="num" x="316" y="146" text-anchor="middle">1</text></g>
+  <g><circle class="numbg" cx="140" cy="40" r="13"/><text class="num" x="140" y="46" text-anchor="middle">2</text></g>
+  <g><circle class="numbg" cx="188" cy="96" r="13"/><text class="num" x="188" y="102" text-anchor="middle">3</text></g>
+  <g><circle class="numbg" cx="98" cy="112" r="13"/><text class="num" x="98" y="118" text-anchor="middle">4</text></g>
+  <g><circle class="numbg" cx="216" cy="219" r="13"/><text class="num" x="216" y="225" text-anchor="middle">5</text></g>
+  <g><circle class="numbg" cx="40" cy="216" r="13"/><text class="num" x="40" y="222" text-anchor="middle">6</text></g>
+</svg>
+<ol class="leg">
+  <li>1 — <b>le bout</b> <span>· носок</span></li>
+  <li>2 — <b>la languette</b> <span>· язычок</span></li>
+  <li>3 — <b>les lacets</b> <span>· шнурки</span></li>
+  <li>4 — <b>l'œillet</b> <span>· люверс, дырочка</span></li>
+  <li>5 — <b>la semelle</b> <span>· подошва</span></li>
+  <li>6 — <b>le talon</b> <span>· каблук</span></li>
+</ol>
+</div>
+
+<h2>4. Exercice — comment ça s'appelle ?</h2>
+<div class="quiz">
+  <div class="bar"><span id="progress">Question 1 / 12</span><span id="score">Score : 0</span></div>
+  <div id="stage"></div>
+  <p id="question" style="font-weight:bold;margin:12px 0 0">La partie en rouge, comment s'appelle-t-elle ?</p>
+  <div class="opts" id="opts"></div>
+  <p class="feedback" id="feedback"></p>
+  <div class="ctrl">
+    <button id="next" disabled>Question suivante</button>
+    <button id="restart">Recommencer</button>
+  </div>
+</div>
+
+<footer>Séance 4 — Mode · schémas et exercice de vocabulaire</footer>
+</div>
+
+<script>
+(function(){
+  var Q = [
+    {svg:"svgManteau", id:"m-col", rep:"le col", opts:["le col","le revers","l'ourlet","la manche"]},
+    {svg:"svgManteau", id:"m-revers", rep:"le revers", opts:["le revers","le col","la poche","la doublure"]},
+    {svg:"svgManteau", id:"m-bouton", rep:"le bouton", opts:["le bouton","le rivet","l'œillet","la ceinture"]},
+    {svg:"svgManteau", id:"m-ceinture", rep:"la ceinture", opts:["la ceinture","l'ourlet","la doublure","le poignet"]},
+    {svg:"svgManteau", id:"m-poche", rep:"la poche", opts:["la poche","la manche","le revers","la semelle"]},
+    {svg:"svgManteau", id:"m-manche", rep:"la manche", opts:["la manche","le poignet","la capuche","le col"]},
+    {svg:"svgManteau", id:"m-ourlet", rep:"l'ourlet", opts:["l'ourlet","la ceinture","la semelle","le bout"]},
+    {svg:"svgManteau", id:"m-doublure", rep:"la doublure", opts:["la doublure","la poche","le revers","l'ourlet"]},
+    {svg:"svgVeste", id:"v-capuche", rep:"la capuche", opts:["la capuche","le col","le poignet","la languette"]},
+    {svg:"svgVeste", id:"v-zip", rep:"la fermeture éclair", opts:["la fermeture éclair","les lacets","le bouton","l'ourlet"]},
+    {svg:"svgVeste", id:"v-poignet", rep:"le poignet", opts:["le poignet","la manche","la ceinture","le revers"]},
+    {svg:"svgChaussure", id:"c-semelle", rep:"la semelle", opts:["la semelle","le talon","le bout","la languette"]},
+    {svg:"svgChaussure", id:"c-talon", rep:"le talon", opts:["le talon","la semelle","l'œillet","le bout"]},
+    {svg:"svgChaussure", id:"c-lacets", rep:"les lacets", opts:["les lacets","les œillets","la languette","la fermeture éclair"]},
+  ];
+
+  var stage = document.getElementById('stage'),
+      optsEl = document.getElementById('opts'),
+      fb = document.getElementById('feedback'),
+      prog = document.getElementById('progress'),
+      scoreEl = document.getElementById('score'),
+      nextBtn = document.getElementById('next'),
+      restartBtn = document.getElementById('restart');
+
+  var liste = [], idx = 0, score = 0, total = 12;
+
+  function melanger(a){
+    var t = a.slice();
+    for (var i = t.length - 1; i > 0; i--){ var j = Math.floor(Math.random()*(i+1)); var x=t[i]; t[i]=t[j]; t[j]=x; }
+    return t;
+  }
+  function afficher(q){
+    stage.innerHTML = '';
+    var src = document.getElementById(q.svg);
+    var clone = src.cloneNode(true);
+    clone.removeAttribute('id');
+    clone.querySelectorAll('.numbg, .num').forEach(function(n){ n.remove(); });
+    var cible = clone.querySelector('#' + CSS.escape(q.id));
+    if (cible) cible.classList.add('hl');
+    stage.appendChild(clone);
+  }
+  function question(){
+    var q = liste[idx];
+    prog.textContent = 'Question ' + (idx+1) + ' / ' + total;
+    afficher(q);
+    optsEl.innerHTML = '';
+    fb.textContent = '';
+    nextBtn.disabled = true;
+    melanger(q.opts).forEach(function(o){
+      var b = document.createElement('button');
+      b.textContent = o;
+      b.addEventListener('click', function(){ repondre(b, o, q); });
+      optsEl.appendChild(b);
+    });
+  }
+  function repondre(btn, choix, q){
+    Array.prototype.forEach.call(optsEl.children, function(b){ b.disabled = true; });
+    if (choix === q.rep){
+      btn.classList.add('ok'); score++; fb.textContent = 'Exact !';
+    } else {
+      btn.classList.add('no');
+      Array.prototype.forEach.call(optsEl.children, function(b){ if (b.textContent === q.rep) b.classList.add('ok'); });
+      fb.textContent = 'Non : c\u2019est ' + q.rep + '.';
+    }
+    scoreEl.textContent = 'Score : ' + score;
+    nextBtn.disabled = false;
+  }
+  function suivant(){
+    idx++;
+    if (idx >= total){
+      stage.innerHTML = '';
+      optsEl.innerHTML = '';
+      prog.textContent = 'Terminé';
+      document.getElementById('question').textContent = '';
+      fb.textContent = 'Résultat : ' + score + ' / ' + total + '.';
+      nextBtn.disabled = true;
+      return;
+    }
+    document.getElementById('question').textContent = "La partie en rouge, comment s'appelle-t-elle ?";
+    question();
+  }
+  function init(){
+    liste = melanger(Q).slice(0, total);
+    idx = 0; score = 0;
+    scoreEl.textContent = 'Score : 0';
+    document.getElementById('question').textContent = "La partie en rouge, comment s'appelle-t-elle ?";
+    question();
+  }
+  nextBtn.addEventListener('click', suivant);
+  restartBtn.addEventListener('click', init);
+  init();
+})();
+</script>
+</body>
+</html>

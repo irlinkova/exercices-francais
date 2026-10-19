@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Expliquez sans le mot — cartes</title>
+<style>
+  :root{
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+    --bg:#f4f5f8;
+    --panel:#ffffff;
+    --ink:#16181d;
+    --muted:#5d6472;
+    --line:#d9dde5;
+    --navy:#1F3864;
+    --navy2:#2E5395;
+    --gold:#b9892f;
+    --green:#1F5C1F;
+    --cardface:#1F3864;
+    --cardtext:#ffffff;
+  }
+  :root:not([data-theme="light"]){
+    @media (prefers-color-scheme: dark){
+      --bg:#14161b; --panel:#1c1f26; --ink:#eceef2; --muted:#a3abbb; --line:#2c313b;
+      --navy:#9fb6dd; --navy2:#8ca6d4; --cardface:#25304a; --cardtext:#f2f5fa; --green:#8fd08f;
+    }
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#14161b; --panel:#1c1f26; --ink:#eceef2; --muted:#a3abbb; --line:#2c313b;
+      --navy:#9fb6dd; --navy2:#8ca6d4; --cardface:#25304a; --cardtext:#f2f5fa; --green:#8fd08f;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#14161b; --panel:#1c1f26; --ink:#eceef2; --muted:#a3abbb; --line:#2c313b;
+    --navy:#9fb6dd; --navy2:#8ca6d4; --cardface:#25304a; --cardtext:#f2f5fa; --green:#8fd08f;
+  }
+  *,*::before,*::after{box-sizing:inherit}
+  html{scroll-padding-top:env(safe-area-inset-top,0px)}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:Georgia,"Times New Roman",serif;
+    line-height:1.5; padding:20px 16px 40px;
+  }
+  .wrap{max-width:660px;margin:0 auto}
+  header{text-align:center;margin-bottom:18px}
+  h1{font-size:1.5rem;margin:0 0 4px;color:var(--navy);letter-spacing:.2px}
+  .sub{margin:0;color:var(--muted);font-size:.92rem;font-style:italic}
+
+  .card{
+    position:relative;width:100%;aspect-ratio:3/2;min-height:190px;
+    perspective:1200px;margin:18px 0 14px;cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .inner{
+    position:absolute;inset:0;transition:transform .5s cubic-bezier(.4,.2,.2,1);
+    transform-style:preserve-3d;
+  }
+  .card.flipped .inner{transform:rotateY(180deg)}
+  .face{
+    position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+    border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:18px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.12);
+  }
+  .back{
+    background:var(--cardface);color:var(--cardtext);
+    border:1px solid var(--cardface);
+  }
+  .back .mark{font-size:2.6rem;line-height:1;margin-bottom:10px;opacity:.9}
+  .back .hint{font-size:.95rem;opacity:.85;font-style:italic}
+  .front{
+    background:var(--panel);border:1px solid var(--line);transform:rotateY(180deg);color:var(--ink);
+  }
+  .front .word{font-size:1.9rem;color:var(--navy);font-weight:bold;word-break:break-word}
+  .front .tag{margin-top:10px;font-size:.8rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+
+  .row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:8px}
+  button{
+    font-family:inherit;font-size:.95rem;padding:10px 18px;border-radius:9px;
+    border:1px solid var(--navy2);background:var(--navy2);color:#fff;cursor:pointer;
+  }
+  button.ghost{background:transparent;color:var(--navy2)}
+  button:disabled{opacity:.42;cursor:default}
+  button:active{transform:translateY(1px)}
+
+  .stats{display:flex;justify-content:center;gap:22px;margin:14px 0 6px;font-size:.88rem;color:var(--muted)}
+  .stats b{color:var(--ink);font-size:1.05rem}
+
+  .aide{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-top:22px}
+  .aide h2{font-size:.78rem;text-transform:uppercase;letter-spacing:.09em;color:var(--navy2);margin:0 0 9px}
+  .aide ul{margin:0;padding-left:18px}
+  .aide li{margin-bottom:5px;font-size:.95rem}
+  .aide.secours li{color:var(--ink)}
+  .done{text-align:center;color:var(--green);font-style:italic;margin-top:10px;min-height:1.3em}
+  footer{margin-top:26px;text-align:center;color:var(--muted);font-size:.8rem;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Expliquez sans le mot</h1>
+    <p class="sub">Piochez une carte, décrivez le mot en français — sans le prononcer.</p>
+  </header>
+
+  <div class="card" id="card" role="button" tabindex="0" aria-label="Carte">
+    <div class="inner">
+      <div class="face back">
+        <div class="mark">🎴</div>
+        <div class="hint" id="backHint">Touchez « Piocher » pour commencer</div>
+      </div>
+      <div class="face front">
+        <div class="word" id="word">—</div>
+        <div class="tag" id="tag"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <button id="draw">Piocher une carte</button>
+    <button id="ok" class="ghost" disabled>Deviné ✓</button>
+    <button id="skip" class="ghost" disabled>Passer</button>
+  </div>
+  <div class="row">
+    <button id="reset" class="ghost">Recommencer</button>
+  </div>
+
+  <div class="stats">
+    <span>Devinés <b id="nOk">0</b></span>
+    <span>Passés <b id="nSkip">0</b></span>
+    <span>Restantes <b id="nLeft">0</b></span>
+  </div>
+  <p class="done" id="done"></p>
+
+  <div class="aide">
+    <h2>Pour expliquer un mot</h2>
+    <ul>
+      <li>C'est une chose qui…</li>
+      <li>C'est une personne qui…</li>
+      <li>C'est le contraire de…</li>
+      <li>C'est comme … , mais …</li>
+      <li>On l'utilise pour…</li>
+    </ul>
+  </div>
+
+  <div class="aide secours">
+    <h2>Si un mot vous manque — en français</h2>
+    <ul>
+      <li>Comment dit-on … en français&nbsp;?</li>
+      <li>Je cherche le mot… c'est comme «&nbsp;…&nbsp;», mais pas exactement.</li>
+      <li>Attendez, je réfléchis une seconde.</li>
+    </ul>
+  </div>
+
+  <footer>Séance 2 — Art · Activité de lexique<br>Le mot ne s'affiche qu'après le tirage : la personne qui devine ne doit pas regarder l'écran.</footer>
+</div>
+
+<script>
+(function(){
+  var MOTS = [
+    {m:"une exposition", t:"nouveau"},
+    {m:"un guide", t:"nouveau"},
+    {m:"une salle d\u2019exposition", t:"nouveau"},
+    {m:"un vernissage", t:"nouveau"},
+    {m:"un peintre", t:"nouveau"},
+    {m:"une couleur vive", t:"nouveau"},
+    {m:"émouvant", t:"nouveau"},
+    {m:"lumineux", t:"nouveau"},
+    {m:"sombre", t:"nouveau"},
+    {m:"une fresque", t:"nouveau"},
+    {m:"une toile", t:"séance 1"},
+    {m:"un collectionneur", t:"séance 1"},
+    {m:"une vente aux enchères", t:"séance 1"},
+    {m:"abordable", t:"séance 1"},
+    {m:"un coup de cœur", t:"séance 1"},
+    {m:"chuter", t:"séance 1"}
+  ];
+
+  var pile = [], courant = null, ok = 0, passe = 0;
+  var card = document.getElementById('card');
+  var elWord = document.getElementById('word');
+  var elTag = document.getElementById('tag');
+  var elHint = document.getElementById('backHint');
+  var bDraw = document.getElementById('draw');
+  var bOk = document.getElementById('ok');
+  var bSkip = document.getElementById('skip');
+  var bReset = document.getElementById('reset');
+  var nOk = document.getElementById('nOk'), nSkip = document.getElementById('nSkip'),
+      nLeft = document.getElementById('nLeft'), done = document.getElementById('done');
+
+  function melanger(a){
+    var t = a.slice();
+    for (var i = t.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var x = t[i]; t[i] = t[j]; t[j] = x;
+    }
+    return t;
+  }
+  function maj(){
+    nOk.textContent = ok; nSkip.textContent = passe; nLeft.textContent = pile.length;
+  }
+  function init(){
+    pile = melanger(MOTS); courant = null; ok = 0; passe = 0;
+    card.classList.remove('flipped');
+    elHint.textContent = "Touchez « Piocher » pour commencer";
+    bDraw.disabled = false; bOk.disabled = true; bSkip.disabled = true;
+    done.textContent = ""; maj();
+  }
+  function piocher(){
+    if (!pile.length){
+      card.classList.remove('flipped');
+      elHint.textContent = "Le paquet est vide";
+      bDraw.disabled = true; bOk.disabled = true; bSkip.disabled = true;
+      done.textContent = "Terminé : " + ok + " mot(s) deviné(s) sur " + MOTS.length + ".";
+      return;
+    }
+    courant = pile.pop();
+    elWord.textContent = courant.m;
+    elTag.textContent = courant.t === "séance 1" ? "révision — séance 1" : "";
+    card.classList.add('flipped');
+    bDraw.disabled = true; bOk.disabled = false; bSkip.disabled = false;
+    done.textContent = ""; maj();
+  }
+  function suivant(compteur){
+    if (compteur === 'ok') ok++; else passe++;
+    card.classList.remove('flipped');
+    bOk.disabled = true; bSkip.disabled = true;
+    maj();
+    setTimeout(function(){
+      if (!pile.length){
+        elHint.textContent = "Le paquet est vide";
+        bDraw.disabled = true;
+        done.textContent = "Terminé : " + ok + " mot(s) deviné(s) sur " + MOTS.length + ".";
+      } else {
+        elHint.textContent = "Carte suivante";
+        bDraw.disabled = false;
+      }
+    }, 320);
+  }
+
+  bDraw.addEventListener('click', piocher);
+  bOk.addEventListener('click', function(){ suivant('ok'); });
+  bSkip.addEventListener('click', function(){ suivant('skip'); });
+  bReset.addEventListener('click', init);
+  card.addEventListener('click', function(){ if (!bDraw.disabled) piocher(); });
+  card.addEventListener('keydown', function(e){
+    if ((e.key === 'Enter' || e.key === ' ') && !bDraw.disabled){ e.preventDefault(); piocher(); }
+  });
+
+  init();
+})();
+</script>
+</body>
+</html>
