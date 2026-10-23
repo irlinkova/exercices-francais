@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Les articles avec les mots abstraits — exercices avec correction</title>
+<style>
+  :root{
+    --bg:#f5f6f9; --panel:#ffffff; --ink:#15181e; --muted:#5e6472; --line:#d8dce4;
+    --navy:#1F3864; --navy2:#2E5395; --soft:#EFF4FB;
+    --ok:#2e7d32; --okbg:#e3f3e4; --no:#c0392b; --nobg:#f9e1de;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#13161b; --panel:#1b1f26; --ink:#ecedf1; --muted:#a2aab9; --line:#2b3039;
+      --navy:#a3b8dc; --navy2:#90a8d2; --soft:#222a38;
+      --ok:#7fd183; --okbg:#1f3a22; --no:#ef8278; --nobg:#4a2824;
+    }
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif;line-height:1.5;
+    padding:16px 12px 56px;padding-top:max(16px,env(safe-area-inset-top))}
+  .wrap{max-width:760px;margin:0 auto}
+  a.back{display:inline-block;margin-bottom:8px;color:var(--navy2);font-size:.95rem}
+  h1{font-size:1.4rem;color:var(--navy);margin:0 0 4px}
+  .sub{margin:0 0 14px;color:var(--muted);font-style:italic}
+  .how{background:var(--soft);border-left:5px solid var(--navy2);border-radius:8px;padding:10px 14px;margin-bottom:6px;font-size:.96rem}
+  .how b{color:var(--navy)}
+  h2{font-size:1.15rem;color:var(--navy2);margin:30px 0 4px;border-bottom:1px solid var(--line);padding-bottom:5px}
+  .instr{margin:0 0 12px;color:var(--muted);font-style:italic;font-size:.94rem}
+  .item{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px}
+  .item.good{border-color:var(--ok)}
+  .item.bad{border-color:var(--no)}
+  .num{font-weight:bold;color:var(--navy);margin-right:6px}
+  .mark{font-weight:bold;margin-left:8px}
+  .mark.good{color:var(--ok)} .mark.bad{color:var(--no)}
+  .sent{margin:0;font-size:1.04rem}
+  .gap{display:inline-block;min-width:4.2em;text-align:center;border-bottom:2px solid var(--navy2);margin:0 3px;padding:0 4px;font-weight:bold;color:var(--navy)}
+  .gap.good{color:var(--ok);border-color:var(--ok);background:var(--okbg)}
+  .gap.bad{color:var(--no);border-color:var(--no);background:var(--nobg)}
+  .opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  button{font-family:inherit;font-size:1rem}
+  button.opt{min-height:44px;min-width:76px;padding:8px 14px;border-radius:10px;border:1px solid var(--navy2);background:transparent;color:var(--navy2);cursor:pointer}
+  button.opt:hover:not(:disabled){background:var(--soft)}
+  button.opt.good{background:var(--ok);border-color:var(--ok);color:#fff}
+  button.opt.bad{background:var(--no);border-color:var(--no);color:#fff}
+  button.opt.hint{outline:3px solid var(--ok)}
+  button:disabled{cursor:default}
+  input.t{font-family:inherit;font-size:1rem;width:6.4em;min-height:38px;padding:4px 8px;margin:2px 3px;border-radius:8px;border:1px solid var(--navy2);background:var(--panel);color:var(--ink);text-align:center}
+  input.t.good{border-color:var(--ok);background:var(--okbg)}
+  input.t.bad{border-color:var(--no);background:var(--nobg)}
+  input.long{width:100%;max-width:100%;text-align:left;margin:8px 0 0}
+  .ans{display:inline-block;margin:0 4px;color:var(--ok);font-weight:bold}
+  .why{margin:8px 0 0;font-size:.9rem;color:var(--muted)}
+  .corr .quote{margin:0;font-size:1.04rem}
+  .tick{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:.98rem;cursor:pointer}
+  .tick input{width:22px;height:22px}
+  .bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0 4px}
+  button.act{min-height:44px;padding:8px 18px;border-radius:10px;border:0;background:var(--navy2);color:#fff;cursor:pointer}
+  button.sec{min-height:44px;padding:8px 18px;border-radius:10px;border:1px solid var(--navy2);background:transparent;color:var(--navy2);cursor:pointer}
+  .res{font-weight:bold;color:var(--navy)}
+  .total{margin-top:30px;background:var(--soft);border-radius:12px;padding:14px 16px;text-align:center;font-size:1.05rem}
+  .total b{color:var(--navy);font-size:1.25rem}
+  footer{margin-top:26px;text-align:center;color:var(--muted);font-size:.8rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← Retour aux exercices</a>
+  <h1>Les articles avec les mots abstraits</h1>
+  <p class="sub">Séance 5 · exercices complémentaires avec correction</p>
+  <div class="how">
+    Faites chaque exercice, puis cliquez sur <b>« Vérifier »</b>. Si vous avez des erreurs, vous pouvez corriger et vérifier encore, ou cliquer sur <b>« Voir les réponses »</b>.
+    Pour écrire l'apostrophe, utilisez la touche <b>'</b> (par exemple : l'). Écrivez <b>X</b> si aucun article n'est nécessaire.
+  </div>
+
+  <h2>Exercice 1 · Partitif ou « de » ?</h2>
+  <p class="instr">Cliquez sur la bonne réponse. La correction apparaît tout de suite.</p>
+  <div id="ex1"></div>
+  <div class="bar"><span class="res" id="res1"></span><button class="sec" type="button" id="reset1">Recommencer</button></div>
+
+  <h2>Exercice 2 · Partitif ou défini ?</h2>
+  <p class="instr">Complétez avec l'article qui convient : le, la, l', du, de la, de l', de, d'.</p>
+  <div id="ex2"></div>
+  <div class="bar">
+    <button class="act" type="button" id="check2">Vérifier</button>
+    <button class="sec" type="button" id="show2" hidden>Voir les réponses</button>
+    <button class="sec" type="button" id="reset2">Recommencer</button>
+    <span class="res" id="res2"></span>
+  </div>
+
+  <h2>Exercice 3 · Tous les cas</h2>
+  <p class="instr">Complétez avec un article (le, la, l', du, de la, de l', de, d') ou avec X si aucun article n'est nécessaire. Aux numéros 10 à 18, corrigez la phrase ; si elle est correcte, cochez la case.</p>
+  <div id="ex3"></div>
+  <div class="bar">
+    <button class="act" type="button" id="check3">Vérifier</button>
+    <button class="sec" type="button" id="show3" hidden>Voir les réponses</button>
+    <button class="sec" type="button" id="reset3">Recommencer</button>
+    <span class="res" id="res3"></span>
+  </div>
+
+  <div class="total" id="total" hidden></div>
+  <footer>Séance 5 — les articles avec les mots abstraits · exercices complémentaires</footer>
+</div>
+
+<script>
+(function(){
+  var D = {"EX1": [{"s": "Pour devenir pianiste, il faut @ talent et beaucoup de travail.", "opts": ["de la", "du", "de l'", "de"], "ok": "du"}, {"s": "Dans cette famille, il y a toujours @ tendresse.", "opts": ["du", "de", "de la", "de l'"], "ok": "de la"}, {"s": "Les enfants ont toujours @ enthousiasme pour les nouveaux jeux.", "opts": ["de la", "d'", "du", "de l'"], "ok": "de l'"}, {"s": "Ce métier demande @ rigueur.", "opts": ["de", "du", "de l'", "de la"], "ok": "de la"}, {"s": "Cet homme a @ charme, mais personne ne lui fait confiance.", "opts": ["de la", "du", "d'", "de"], "ok": "du"}, {"s": "Malgré la crise, il y a encore @ espoir dans le village.", "opts": ["de la", "du", "de l'", "d'"], "ok": "de l'"}, {"s": "Depuis son divorce, il n'a plus @ ambition.", "opts": ["de la", "de l'", "du", "d'"], "ok": "d'"}, {"s": "Elle ne montre jamais @ jalousie, même quand elle perd.", "opts": ["de", "de la", "d'", "du"], "ok": "de"}, {"s": "On trouve beaucoup @ solitude dans les grandes villes.", "opts": ["de la", "d'", "de", "de l'"], "ok": "de"}, {"s": "Il y a tant @ injustice dans le monde !", "opts": ["de la", "de l'", "d'", "l'"], "ok": "d'"}, {"s": "Après une longue maladie, elle a surtout besoin @ repos.", "opts": ["du", "de", "de la", "d'"], "ok": "de"}, {"s": "Si tu avais un peu plus @ audace, tu réussirais.", "opts": ["de l'", "de", "d'", "l'"], "ok": "d'"}], "EX2": [{"s": "Ma sœur a @ humour : elle fait rire tout le monde.", "ok": "de l'"}, {"s": "J'admire @ humour de ma sœur.", "ok": "l'"}, {"s": "Ma mère a @ générosité : elle aide tout le monde.", "ok": "de la"}, {"s": "À la campagne, je trouve enfin @ calme.", "ok": "du"}, {"s": "J'envie @ calme de la campagne.", "ok": "le"}, {"s": "Pour travailler la nuit, il lui faut @ santé.", "ok": "de la"}, {"s": "Dans ce quartier, il y a @ richesse : on voit des villas partout.", "ok": "de la"}, {"s": "Je ne trouve pas @ calme dans cette ville.", "ok": "de"}, {"s": "@ santé passe avant @ travail, pour moi.", "ok": "La | le"}, {"s": "@ richesse ne garantit pas @ bonheur.", "ok": "La | le"}, {"s": "Mon voisin n'a pas @ culture, mais sa fille a @ curiosité.", "ok": "de | de la"}, {"s": "Pendant la crise, ils ont montré @ solidarité ; j'admire @ solidarité de ce quartier.", "ok": "de la | la"}], "EX3": [{"s": "@ amitié compte plus pour moi que @ réussite.", "ok": "L' | la"}, {"s": "Elle a élevé ses enfants avec @ douceur et @ fermeté.", "ok": "X | X"}, {"s": "Il vit sans @ stress depuis qu'il a changé de travail.", "ok": "X"}, {"s": "Ce voyage a été pour nous un moment de @ sérénité.", "ok": "X"}, {"s": "Dans cette région, on voit trop @ pauvreté.", "ok": "de"}, {"s": "Mon grand-père a @ sagesse : tout le monde l'écoute.", "ok": "de la"}, {"s": "Après cette semaine difficile, nous avons besoin de @ paix.", "ok": "X"}, {"s": "Elle déteste @ mensonge, mais elle adore @ cuisiner.", "ok": "le | X"}, {"s": "Il n'a plus @ envie de voyager.", "ok": "X"}, {"s": "Corrigez : « Les enfants ont la peur des orages. »", "ok": "Les enfants ont peur des orages.", "corr": true}, {"s": "Corrigez : « Ils n'ont pas de confiance en eux. »", "ok": "Ils n'ont pas confiance en eux.", "corr": true}, {"s": "Corrigez : « Nous avons beaucoup de chance d'être ensemble. »", "ok": "✓ (la phrase est correcte)", "corr": true}, {"s": "Corrigez : « Pour moi, bonheur compte plus que richesse. »", "ok": "Pour moi, le bonheur compte plus que la richesse.", "corr": true}, {"s": "Corrigez : « Je préfère le voyager seul. »", "ok": "Je préfère voyager seul.", "corr": true}, {"s": "Corrigez : « Nous n'avons pas assez d'argent pour vivre sans soucis. »", "ok": "✓ (la phrase est correcte)", "corr": true}, {"s": "Corrigez : « Il m'a répondu avec la gentillesse. »", "ok": "Il m'a répondu avec gentillesse.", "corr": true}, {"s": "Corrigez : « Cette enseignante a beaucoup de l'indulgence. »", "ok": "Cette enseignante a beaucoup d'indulgence.", "corr": true}, {"s": "Corrigez : « Sa voisine a de la sympathie pour lui, mais pas d'amour. »", "ok": "✓ (la phrase est correcte)", "corr": true}], "WHY1": ["partitif : une partie de talent", "partitif : de la + nom féminin", "partitif : de l' devant voyelle", "partitif : de la + nom féminin", "partitif : du + nom masculin", "partitif : de l' devant voyelle", "négation (ne… plus) : d' devant voyelle", "négation (ne… jamais) : de", "quantité (beaucoup) : de", "quantité (tant) : d' devant voyelle", "besoin de + nom : de, sans article", "un peu plus de : d' devant voyelle"], "WHY2": ["partitif : une partie d'humour", "défini : l'humour de ma sœur (précisé)", "partitif : une partie de générosité", "partitif : un peu de calme", "défini : le calme de la campagne (précisé)", "partitif : il lui faut de la santé (une quantité)", "partitif : il y a de la richesse", "négation : de", "défini, idée générale : La santé… le travail", "défini, idée générale : La richesse… le bonheur", "négation → de ; puis partitif → de la", "partitif (montrer de la solidarité) ; défini précisé (la solidarité de ce quartier)"], "WHY3": ["défini, idée générale", "avec + nom (manière) : sans article", "sans + nom : sans article", "nom + de + nom : sans article", "quantité (trop) : de, sans article", "partitif : avoir de la sagesse", "avoir besoin de + nom : sans article", "défini (le mensonge) ; aimer + verbe = infinitif, sans article", "avoir envie : sans article, même à la négation", "avoir peur : sans article", "avoir confiance : sans article, même à la négation (pas de « pas de »)", "beaucoup de + nom : correct", "défini, idée générale : il manque le bonheur et la richesse", "préférer + verbe = infinitif, sans article", "pas assez d' + nom ; sans + nom, sans article : correct", "avec + nom (manière) : sans article", "beaucoup de / d' + nom : jamais « de l' »", "partitif (de la sympathie) ; négation : pas d'amour : correct"]};
+
+  // <PURE>
+  function norm(s){
+    return String(s == null ? '' : s).toLowerCase()
+      .replace(/[\u2018\u2019`\u00b4]/g, "'")
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s*'\s*/g, "'")
+      .replace(/\s+/g, ' ').trim();
+  }
+  function normS(s){
+    return norm(s).replace(/[.,;:!?\u00ab\u00bb"\u201c\u201d()]/g, ' ').replace(/\s+/g, ' ').trim();
+  }
+  var ZERO = ['x', '-', '\u2014', '\u2013', '\u2205', '0', 'rien', 'aucun', 'aucun article', "pas d'article"];
+  function sameGap(input, expected){
+    var a = norm(input), e = norm(expected);
+    if (e === 'x') return ZERO.indexOf(a) !== -1;
+    return a === e;
+  }
+  function sameSentence(input, expected){ return normS(input) === normS(expected); }
+  // </PURE>
+
+  function $(id){ return document.getElementById(id); }
+  function el(tag, cls, txt){ var e = document.createElement(tag); if (cls) e.className = cls; if (txt !== undefined) e.textContent = txt; return e; }
+  var scores = { 1: null, 2: null, 3: null }, totals = { 1: 12, 2: 16, 3: 21 };
+
+  function updateTotal(){
+    var done = [1, 2, 3].filter(function(k){ return scores[k] !== null; });
+    var box = $('total');
+    if (done.length < 3){ box.hidden = true; return; }
+    var s = scores[1] + scores[2] + scores[3], t = totals[1] + totals[2] + totals[3];
+    var pct = Math.round(100 * s / t);
+    var msg = pct >= 90 ? 'Excellent !' : pct >= 70 ? 'Très bien. Relisez les explications des erreurs.' : pct >= 50 ? 'Bien. Regardez les réponses et recommencez.' : 'Courage ! Relisez les règles de la fiche, puis recommencez.';
+    box.hidden = false;
+    box.innerHTML = '';
+    box.appendChild(document.createTextNode('Résultat total : '));
+    box.appendChild(el('b', '', s + ' / ' + t));
+    box.appendChild(document.createTextNode(' — ' + msg));
+  }
+
+  // ---------- Exercice 1 : choix, correction immédiate ----------
+  function renderEx1(){
+    var root = $('ex1'); root.innerHTML = ''; var score = 0, answered = 0;
+    scores[1] = null; $('res1').textContent = ''; updateTotal();
+    D.EX1.forEach(function(it, i){
+      var card = el('div', 'item');
+      var p = el('p', 'sent');
+      p.appendChild(el('span', 'num', (i + 1) + '.'));
+      var parts = it.s.split('@');
+      p.appendChild(document.createTextNode(parts[0]));
+      var gap = el('span', 'gap', '…'); p.appendChild(gap);
+      p.appendChild(document.createTextNode(parts[1]));
+      card.appendChild(p);
+      var opts = el('div', 'opts'); var btns = [];
+      var why = el('p', 'why'); why.hidden = true;
+      it.opts.forEach(function(o){
+        var b = el('button', 'opt', o); b.type = 'button'; btns.push(b);
+        b.addEventListener('click', function(){
+          if (card.dataset.done) return;
+          card.dataset.done = '1';
+          var good = norm(o) === norm(it.ok);
+          gap.textContent = o; gap.className = 'gap ' + (good ? 'good' : 'bad');
+          b.className = 'opt ' + (good ? 'good' : 'bad');
+          card.classList.add(good ? 'good' : 'bad');
+          if (!good){ btns.forEach(function(x){ if (norm(x.textContent) === norm(it.ok)) x.classList.add('hint'); }); }
+          btns.forEach(function(x){ x.disabled = true; });
+          why.textContent = (good ? '✓ ' : '✗ La bonne réponse : ' + it.ok + '. ') + D.WHY1[i] + '.';
+          why.hidden = false;
+          if (good) score++; answered++;
+          if (answered === D.EX1.length){
+            scores[1] = score; $('res1').textContent = 'Résultat : ' + score + ' / ' + D.EX1.length; updateTotal();
+          }
+        });
+        opts.appendChild(b);
+      });
+      card.appendChild(opts); card.appendChild(why);
+      root.appendChild(card);
+    });
+  }
+  $('reset1').addEventListener('click', renderEx1);
+
+  // ---------- Exercices 2 et 3 : saisie + vérification ----------
+  function buildSet(rootId, items, whyList, key, checkId, showId, resetId, resId){
+    var set = { items: [] };
+    function render(){
+      var root = $(rootId); root.innerHTML = ''; set.items = []; scores[key] = null;
+      $(resId).textContent = ''; $(showId).hidden = true; updateTotal();
+      items.forEach(function(it, i){
+        var card = el('div', 'item');
+        var head = el('p', 'sent'); head.appendChild(el('span', 'num', (i + 1) + '.'));
+        var rec = { card: card, why: el('p', 'why'), mark: el('span', 'mark') };
+        rec.why.hidden = true;
+        if (it.corr){
+          card.classList.add('corr');
+          var sentence = it.s.replace(/^Corrigez\s*:\s*\u00ab\s*/, '').replace(/\s*\u00bb\s*$/, '');
+          head.appendChild(document.createTextNode('Corrigez : \u00ab ' + sentence + ' \u00bb'));
+          head.appendChild(rec.mark); card.appendChild(head);
+          var lab = el('label', 'tick'); var cb = document.createElement('input'); cb.type = 'checkbox';
+          lab.appendChild(cb); lab.appendChild(document.createTextNode('La phrase est correcte \u2713'));
+          card.appendChild(lab);
+          var inp = el('input', 't long'); inp.type = 'text'; inp.placeholder = 'Écrivez la phrase corrigée';
+          inp.setAttribute('autocomplete', 'off'); inp.setAttribute('autocapitalize', 'off'); inp.setAttribute('spellcheck', 'false');
+          card.appendChild(inp);
+          var isOk = it.ok.charAt(0) === '\u2713';
+          rec.kind = 'corr'; rec.cb = cb; rec.inp = inp; rec.isOk = isOk; rec.exp = it.ok;
+          cb.addEventListener('change', function(){ inp.disabled = cb.checked; if (cb.checked) inp.value = ''; clearMarks(rec); });
+          inp.addEventListener('input', function(){ clearMarks(rec); });
+          rec.points = 1;
+        } else {
+          var parts = it.s.split('@'); var exp = it.ok.split('|').map(function(x){ return x.trim(); });
+          rec.kind = 'gap'; rec.inputs = []; rec.exp = exp; rec.points = exp.length; rec.ans = [];
+          parts.forEach(function(txt, k){
+            head.appendChild(document.createTextNode(txt));
+            if (k < parts.length - 1){
+              var inp = el('input', 't'); inp.type = 'text';
+              inp.setAttribute('autocomplete', 'off'); inp.setAttribute('autocapitalize', 'off'); inp.setAttribute('spellcheck', 'false');
+              inp.setAttribute('aria-label', 'réponse ' + (k + 1));
+              inp.addEventListener('input', function(){ clearMarks(rec); });
+              head.appendChild(inp); rec.inputs.push(inp);
+              var a = el('span', 'ans'); a.hidden = true; head.appendChild(a); rec.ans.push(a);
+            }
+          });
+          head.appendChild(rec.mark); card.appendChild(head);
+        }
+        card.appendChild(rec.why);
+        set.items.push(rec); root.appendChild(card);
+      });
+    }
+    function clearMarks(rec){
+      rec.card.classList.remove('good', 'bad'); rec.mark.textContent = ''; rec.mark.className = 'mark';
+      if (rec.inputs) rec.inputs.forEach(function(x){ x.classList.remove('good', 'bad'); });
+      if (rec.inp) rec.inp.classList.remove('good', 'bad');
+    }
+    function setMark(rec, good){
+      rec.card.classList.add(good ? 'good' : 'bad');
+      rec.mark.textContent = good ? ' ✓' : ' ✗'; rec.mark.className = 'mark ' + (good ? 'good' : 'bad');
+    }
+    function check(){
+      var pts = 0, total = 0;
+      set.items.forEach(function(rec){
+        total += rec.points; var good = true;
+        if (rec.kind === 'gap'){
+          rec.inputs.forEach(function(inp, k){
+            var ok = sameGap(inp.value, rec.exp[k]);
+            inp.classList.remove('good', 'bad'); inp.classList.add(ok ? 'good' : 'bad');
+            if (ok) pts++; else good = false;
+          });
+        } else {
+          if (rec.isOk){ good = rec.cb.checked; }
+          else { good = !rec.cb.checked && sameSentence(rec.inp.value, rec.exp); }
+          rec.inp.classList.remove('good', 'bad'); if (rec.inp.value || rec.cb.checked) rec.inp.classList.add(good ? 'good' : 'bad');
+          if (good) pts++;
+        }
+        rec.card.classList.remove('good', 'bad'); setMark(rec, good);
+      });
+      scores[key] = pts; $(resId).textContent = 'Résultat : ' + pts + ' / ' + total;
+      $(showId).hidden = false; updateTotal();
+    }
+    function reveal(){
+      set.items.forEach(function(rec, i){
+        if (rec.kind === 'gap'){
+          rec.inputs.forEach(function(inp, k){
+            if (!sameGap(inp.value, rec.exp[k])){ rec.ans[k].textContent = '\u2192 ' + rec.exp[k]; rec.ans[k].hidden = false; }
+          });
+          rec.why.textContent = 'Règle : ' + whyList[i] + '.';
+        } else {
+          rec.why.textContent = (rec.isOk ? '\u2713 La phrase est correcte. ' : 'Réponse : ' + rec.exp + ' ') + 'Règle : ' + whyList[i] + '.';
+        }
+        rec.why.hidden = false;
+      });
+    }
+    $(checkId).addEventListener('click', check);
+    $(showId).addEventListener('click', function(){ if (scores[key] === null) check(); reveal(); $(showId).hidden = true; });
+    $(resetId).addEventListener('click', render);
+    render();
+  }
+
+  renderEx1();
+  buildSet('ex2', D.EX2, D.WHY2, 2, 'check2', 'show2', 'reset2', 'res2');
+  buildSet('ex3', D.EX3, D.WHY3, 3, 'check3', 'show3', 'reset3', 'res3');
+})();
+</script>
+</body>
+</html>
