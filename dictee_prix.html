@@ -52,6 +52,10 @@
   .res{font-weight:bold;color:var(--navy)}
   .total{margin-top:30px;background:var(--soft);border-radius:12px;padding:14px 16px;text-align:center;font-size:1.05rem}
   .total b{color:var(--navy);font-size:1.25rem}
+  .voice{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0 0;font-size:.96rem}
+  .voice label{color:var(--navy);font-weight:bold}
+  .voice select{font-family:inherit;font-size:1rem;min-height:42px;max-width:100%;padding:4px 8px;border-radius:8px;border:1px solid var(--navy2);background:var(--panel);color:var(--ink)}
+  .voice .tip{flex-basis:100%;color:var(--muted);font-size:.88rem;font-style:italic}
   footer{margin-top:26px;text-align:center;color:var(--muted);font-size:.8rem}
 </style>
 </head>
@@ -68,6 +72,13 @@
   <div class="warn" id="noVoice" hidden>
     Votre appareil n'a pas de voix française : les prix risquent d'être mal prononcés. Essayez avec un autre navigateur
     (Safari, Chrome) ou un autre appareil.
+  </div>
+
+  <div class="voice" id="voiceBox" hidden>
+    <label for="voiceSel">Voix :</label>
+    <select id="voiceSel"></select>
+    <button class="play" type="button" id="voiceTest">▶ Essayer</button>
+    <span class="tip">Si la voix sonne mal, choisissez-en une autre. Les meilleures : « Natural » (navigateur Edge), « Google français » (Chrome), « Audrey », « Thomas » ou « Amélie » sur iPhone et Mac.</span>
   </div>
 
   <h2>Partie A · Écoutez et écrivez en chiffres</h2>
@@ -163,28 +174,53 @@
   }
 
   // ---------- Voix ----------
-  var voice = null;
-  function pickVoice(){
+  var voice = null, frVoices = [];
+  function store(k, v){ try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
+  function quality(v){                     // plus le score est haut, meilleure est la voix
+    var n = v.name, q = 0;
+    if (/natural|neural|online/i.test(n)) q += 50;          // Edge : Denise, Henri… (Natural)
+    if (/premium/i.test(n)) q += 45;
+    if (/enhanced|amélioré|améliorée/i.test(n)) q += 40;
+    if (/google/i.test(n)) q += 30;                          // Chrome : Google français
+    if (/audrey|thomas|amélie|amelie|marie|denise|henri|eloise|vivienne|remy|rémy/i.test(n)) q += 15;
+    if (/^fr[-_]FR/i.test(v.lang)) q += 10;
+    if (/compact|espeak|e-speak/i.test(n)) q -= 40;
+    return q;
+  }
+  function loadVoices(){
     if (!('speechSynthesis' in window)) return;
     var vs = window.speechSynthesis.getVoices();
     if (!vs.length) return;
-    voice = vs.filter(function(v){ return /^fr[-_]FR/i.test(v.lang); })[0] ||
-            vs.filter(function(v){ return /^fr/i.test(v.lang); })[0] || null;
-    $('noVoice').hidden = !!voice;
+    frVoices = vs.filter(function(v){ return /^fr/i.test(v.lang); })
+                 .sort(function(x, y){ return quality(y) - quality(x); });
+    var sel = $('voiceSel'); sel.innerHTML = '';
+    frVoices.forEach(function(v, i){ var o = el('option', '', v.name + ' (' + v.lang + ')'); o.value = String(i); sel.appendChild(o); });
+    $('noVoice').hidden = frVoices.length > 0;
+    $('voiceBox').hidden = frVoices.length === 0;
+    if (!frVoices.length){ voice = null; return; }
+    var saved = store('dicteeVoix'), idx = 0;
+    frVoices.forEach(function(v, i){ if (v.name === saved) idx = i; });
+    sel.value = String(idx); voice = frVoices[idx];
   }
   if ('speechSynthesis' in window){
-    pickVoice();
-    window.speechSynthesis.onvoiceschanged = pickVoice;
-    setTimeout(function(){ if (!voice) pickVoice(); if (!voice && window.speechSynthesis.getVoices().length) $('noVoice').hidden = false; }, 1500);
+    loadVoices();
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+    setTimeout(function(){ if (!frVoices.length){ loadVoices(); if (window.speechSynthesis.getVoices().length && !frVoices.length) $('noVoice').hidden = false; } }, 1500);
   } else {
     $('noVoice').hidden = false;
   }
+  $('voiceSel').addEventListener('change', function(){
+    voice = frVoices[Number(this.value)] || null;
+    if (voice) store('dicteeVoix', voice.name);
+    say('Bonjour ! Six euros soixante et onze.', false);
+  });
+  $('voiceTest').addEventListener('click', function(){ say('Bonjour ! Six euros soixante et onze.', false); });
   function say(text, slow){
     if (!('speechSynthesis' in window)) return;
     window.speechSynthesis.cancel();
     var u = new SpeechSynthesisUtterance(text);
-    u.lang = 'fr-FR'; if (voice) u.voice = voice;
-    u.rate = slow ? 0.6 : 0.9;
+    u.lang = voice ? voice.lang : 'fr-FR'; if (voice) u.voice = voice;
+    u.rate = slow ? 0.7 : 1.0;
     window.speechSynthesis.speak(u);
   }
 
