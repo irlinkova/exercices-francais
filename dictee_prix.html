@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dictée des prix — exercices avec correction</title>
+<style>
+  :root{
+    --bg:#f5f6f9; --panel:#ffffff; --ink:#15181e; --muted:#5e6472; --line:#d8dce4;
+    --navy:#1F3864; --navy2:#2E5395; --soft:#EFF4FB;
+    --ok:#2e7d32; --okbg:#e3f3e4; --no:#c0392b; --nobg:#f9e1de; --warn:#8b4513; --warnbg:#fbf3e8;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#13161b; --panel:#1b1f26; --ink:#ecedf1; --muted:#a2aab9; --line:#2b3039;
+      --navy:#a3b8dc; --navy2:#90a8d2; --soft:#222a38;
+      --ok:#7fd183; --okbg:#1f3a22; --no:#ef8278; --nobg:#4a2824; --warn:#e0b07a; --warnbg:#3a2c1c;
+    }
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif;line-height:1.5;
+    padding:16px 12px 56px;padding-top:max(16px,env(safe-area-inset-top))}
+  .wrap{max-width:760px;margin:0 auto}
+  a.back{display:inline-block;margin-bottom:8px;color:var(--navy2);font-size:.95rem}
+  h1{font-size:1.4rem;color:var(--navy);margin:0 0 4px}
+  .sub{margin:0 0 14px;color:var(--muted);font-style:italic}
+  .how{background:var(--soft);border-left:5px solid var(--navy2);border-radius:8px;padding:10px 14px;margin-bottom:6px;font-size:.96rem}
+  .how b{color:var(--navy)}
+  .warn{background:var(--warnbg);border-left:5px solid var(--warn);border-radius:8px;padding:10px 14px;margin:10px 0 0;font-size:.95rem}
+  h2{font-size:1.15rem;color:var(--navy2);margin:30px 0 4px;border-bottom:1px solid var(--line);padding-bottom:5px}
+  .instr{margin:0 0 12px;color:var(--muted);font-style:italic;font-size:.94rem}
+  .item{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px}
+  .item.good{border-color:var(--ok)}
+  .item.bad{border-color:var(--no)}
+  .row{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+  .num{font-weight:bold;color:var(--navy);margin-right:2px;min-width:1.6em}
+  .price{font-size:1.25rem;font-weight:bold;color:var(--navy);min-width:4.5em}
+  .mark{font-weight:bold;margin-left:4px}
+  .mark.good{color:var(--ok)} .mark.bad{color:var(--no)}
+  button{font-family:inherit;font-size:1rem}
+  button.play{min-height:44px;padding:6px 12px;border-radius:10px;border:1px solid var(--navy2);background:transparent;color:var(--navy2);cursor:pointer}
+  button.play:hover{background:var(--soft)}
+  input.t{font-family:inherit;font-size:1.05rem;min-height:42px;padding:4px 10px;border-radius:8px;border:1px solid var(--navy2);background:var(--panel);color:var(--ink)}
+  input.num-in{width:7em;text-align:center}
+  input.words{flex:1 1 260px;min-width:0}
+  input.t.good{border-color:var(--ok);background:var(--okbg)}
+  input.t.bad{border-color:var(--no);background:var(--nobg)}
+  .ans{margin:8px 0 0;color:var(--ok);font-weight:bold}
+  .bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0 4px}
+  button.act{min-height:44px;padding:8px 18px;border-radius:10px;border:0;background:var(--navy2);color:#fff;cursor:pointer}
+  button.sec{min-height:44px;padding:8px 18px;border-radius:10px;border:1px solid var(--navy2);background:transparent;color:var(--navy2);cursor:pointer}
+  .res{font-weight:bold;color:var(--navy)}
+  .total{margin-top:30px;background:var(--soft);border-radius:12px;padding:14px 16px;text-align:center;font-size:1.05rem}
+  .total b{color:var(--navy);font-size:1.25rem}
+  footer{margin-top:26px;text-align:center;color:var(--muted);font-size:.8rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← Retour aux exercices</a>
+  <h1>Dictée des prix</h1>
+  <p class="sub">Séance 8 · les nombres et les prix · de nouveaux prix à chaque fois</p>
+  <div class="how">
+    Touchez <b>▶ Écouter</b> pour entendre un prix, autant de fois que vous voulez. <b>🐢 Lentement</b> le répète plus lentement.
+    Puis cliquez sur <b>« Vérifier »</b>. Après deux erreurs sur le même prix, la bonne réponse s'affiche.
+    <b>« Recommencer »</b> donne de nouveaux prix.
+  </div>
+  <div class="warn" id="noVoice" hidden>
+    Votre appareil n'a pas de voix française : les prix risquent d'être mal prononcés. Essayez avec un autre navigateur
+    (Safari, Chrome) ou un autre appareil.
+  </div>
+
+  <h2>Partie A · Écoutez et écrivez en chiffres</h2>
+  <p class="instr">Écrivez le prix en chiffres, par exemple : 6,71</p>
+  <div id="partA"></div>
+  <div class="bar">
+    <button class="act" type="button" id="checkA">Vérifier</button>
+    <button class="sec" type="button" id="showA" hidden>Voir les réponses</button>
+    <button class="sec" type="button" id="resetA">Recommencer</button>
+    <span class="res" id="resA"></span>
+  </div>
+
+  <h2>Partie B · Écrivez en lettres</h2>
+  <p class="instr">Écrivez le prix en lettres, par exemple : six euros soixante et onze. Attention aux traits d'union, à « et » et au « s » de quatre-vingts.</p>
+  <div id="partB"></div>
+  <div class="bar">
+    <button class="act" type="button" id="checkB">Vérifier</button>
+    <button class="sec" type="button" id="showB" hidden>Voir les réponses</button>
+    <button class="sec" type="button" id="resetB">Recommencer</button>
+    <span class="res" id="resB"></span>
+  </div>
+
+  <div class="total" id="total" hidden></div>
+  <footer>Séance 8 — les nombres et les prix · dictée</footer>
+</div>
+
+<script>
+(function(){
+  // <PURE>
+  var UNITS = ['zéro','un','deux','trois','quatre','cinq','six','sept','huit','neuf','dix','onze','douze','treize',
+               'quatorze','quinze','seize','dix-sept','dix-huit','dix-neuf'];
+  var TENS = {2:'vingt',3:'trente',4:'quarante',5:'cinquante',6:'soixante'};
+  function words(n){                       // 0 … 99, orthographe traditionnelle
+    if (n < 20) return UNITS[n];
+    var t = Math.floor(n / 10), u = n % 10;
+    if (t <= 6) return TENS[t] + (u === 0 ? '' : u === 1 ? ' et un' : '-' + UNITS[u]);
+    if (t === 7) return u === 1 ? 'soixante et onze' : 'soixante-' + UNITS[10 + u];
+    if (t === 8) return u === 0 ? 'quatre-vingts' : 'quatre-vingt-' + UNITS[u];
+    return 'quatre-vingt-' + UNITS[10 + u];   // 90 … 99
+  }
+  function priceWords(c){                  // c en centimes
+    var e = Math.floor(c / 100), ct = c % 100;
+    return words(e) + (e === 1 ? ' euro' : ' euros') + (ct ? ' ' + words(ct) : '');
+  }
+  function priceDigits(c){
+    var e = Math.floor(c / 100), ct = c % 100;
+    return e + ',' + (ct < 10 ? '0' : '') + ct;
+  }
+  function parseDigits(s){                 // « 6,71 », « 6.71 », « 6,71 € », « 4,7 » → centimes
+    var x = String(s || '').replace(/€|eur(os?)?/gi, '').replace(/\s+/g, '').replace('.', ',');
+    var m = x.match(/^(\d{1,3})(?:,(\d{1,2}))?$/);
+    if (!m) return null;
+    var ct = m[2] === undefined ? 0 : (m[2].length === 1 ? Number(m[2]) * 10 : Number(m[2]));
+    return Number(m[1]) * 100 + ct;
+  }
+  function normWords(s){
+    return String(s || '').toLowerCase().replace(/[‐-—]/g, '-')
+      .replace(/\s*-\s*/g, '-').replace(/[.,;:!?]/g, ' ').replace(/\s+/g, ' ').trim()
+      .replace(/ centimes?$/, '');
+  }
+  function rectified(s){                   // orthographe rectifiée (1990) : traits d'union partout entre les nombres
+    return s.replace(/ et /g, '-et-');
+  }
+  function sameWords(input, c){
+    var a = normWords(input), e = priceWords(c);
+    var parts = e.split(/ (euros?) /);     // ["six", "euros", "soixante et onze"]
+    var alt = parts.length === 3 ? rectified(parts[0]) + ' ' + parts[1] + ' ' + rectified(parts[2]) : rectified(e);
+    return a === e || a === alt;
+  }
+  // </PURE>
+
+  function $(id){ return document.getElementById(id); }
+  function el(tag, cls, txt){ var e = document.createElement(tag); if (cls) e.className = cls; if (txt !== undefined) e.textContent = txt; return e; }
+  function rnd(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+  function pickCents(){
+    var r = Math.random();
+    if (r < 0.55) return rnd(70, 99);
+    if (r < 0.75) return [21, 31, 41, 51, 61][rnd(0, 4)];
+    return rnd(10, 69);
+  }
+  function pickEuros(min){
+    return Math.random() < 0.3 ? rnd(70, 99) : rnd(min, 19);
+  }
+  function makePrices(n, fixed, minEuro){
+    var seen = {}, out = [];
+    (fixed || []).forEach(function(c){ seen[c] = 1; out.push(c); });
+    while (out.length < n){
+      var c = pickEuros(minEuro) * 100 + pickCents();
+      if (!seen[c]){ seen[c] = 1; out.push(c); }
+    }
+    for (var i = out.length - 1; i > 0; i--){ var j = rnd(0, i); var t = out[i]; out[i] = out[j]; out[j] = t; }
+    return out;
+  }
+
+  // ---------- Voix ----------
+  var voice = null;
+  function pickVoice(){
+    if (!('speechSynthesis' in window)) return;
+    var vs = window.speechSynthesis.getVoices();
+    if (!vs.length) return;
+    voice = vs.filter(function(v){ return /^fr[-_]FR/i.test(v.lang); })[0] ||
+            vs.filter(function(v){ return /^fr/i.test(v.lang); })[0] || null;
+    $('noVoice').hidden = !!voice;
+  }
+  if ('speechSynthesis' in window){
+    pickVoice();
+    window.speechSynthesis.onvoiceschanged = pickVoice;
+    setTimeout(function(){ if (!voice) pickVoice(); if (!voice && window.speechSynthesis.getVoices().length) $('noVoice').hidden = false; }, 1500);
+  } else {
+    $('noVoice').hidden = false;
+  }
+  function say(text, slow){
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(text);
+    u.lang = 'fr-FR'; if (voice) u.voice = voice;
+    u.rate = slow ? 0.6 : 0.9;
+    window.speechSynthesis.speak(u);
+  }
+
+  var scores = { A: null, B: null }, totals = { A: 10, B: 8 };
+  function updateTotal(){
+    var box = $('total');
+    if (scores.A === null || scores.B === null){ box.hidden = true; return; }
+    var s = scores.A + scores.B, t = totals.A + totals.B, pct = Math.round(100 * s / t);
+    var msg = pct >= 90 ? 'Excellent !' : pct >= 70 ? 'Très bien. Regardez les erreurs et recommencez.' :
+              pct >= 50 ? 'Bien. Relisez la règle 1 de la fiche, puis recommencez.' : 'Courage ! Relisez la règle 1, puis recommencez.';
+    box.hidden = false; box.innerHTML = '';
+    box.appendChild(document.createTextNode('Résultat total : '));
+    box.appendChild(el('b', '', s + ' / ' + t));
+    box.appendChild(document.createTextNode(' — ' + msg));
+  }
+
+  function buildPart(key, opts){
+    var recs = [];
+    function render(){
+      var root = $(opts.root); root.innerHTML = ''; recs = [];
+      scores[key] = null; $(opts.res).textContent = ''; $(opts.show).hidden = true; updateTotal();
+      var prices = makePrices(totals[key], opts.fixed, opts.minEuro);
+      prices.forEach(function(c, i){
+        var card = el('div', 'item'), row = el('div', 'row');
+        row.appendChild(el('span', 'num', (i + 1) + '.'));
+        if (opts.listen){
+          var b1 = el('button', 'play', '▶ Écouter'); b1.type = 'button';
+          var b2 = el('button', 'play', '🐢 Lentement'); b2.type = 'button';
+          b1.addEventListener('click', function(){ say(priceWords(c), false); });
+          b2.addEventListener('click', function(){ say(priceWords(c), true); });
+          row.appendChild(b1); row.appendChild(b2);
+        } else {
+          row.appendChild(el('span', 'price', priceDigits(c) + ' €'));
+        }
+        var inp = el('input', 't ' + (opts.listen ? 'num-in' : 'words')); inp.type = 'text';
+        inp.setAttribute('autocomplete', 'off'); inp.setAttribute('autocapitalize', 'off'); inp.setAttribute('spellcheck', 'false');
+        inp.setAttribute('aria-label', 'réponse ' + (i + 1));
+        inp.placeholder = opts.listen ? '0,00' : 'en lettres';
+        if (opts.listen) inp.setAttribute('inputmode', 'decimal');
+        row.appendChild(inp);
+        var mark = el('span', 'mark'); row.appendChild(mark);
+        card.appendChild(row);
+        var ans = el('p', 'ans'); ans.hidden = true; card.appendChild(ans);
+        var rec = { c: c, card: card, inp: inp, mark: mark, ans: ans, fails: 0 };
+        inp.addEventListener('input', function(){ card.classList.remove('good', 'bad'); inp.classList.remove('good', 'bad'); mark.textContent = ''; });
+        recs.push(rec); root.appendChild(card);
+      });
+    }
+    function answerText(rec){ return '→ ' + priceDigits(rec.c) + ' € = ' + priceWords(rec.c); }
+    function isGood(rec){
+      return opts.listen ? parseDigits(rec.inp.value) === rec.c : sameWords(rec.inp.value, rec.c);
+    }
+    function check(){
+      var pts = 0;
+      recs.forEach(function(rec){
+        if (!rec.inp.value.trim()){       // pas de réponse : pas de marque, pas d'erreur comptée
+          rec.card.classList.remove('good', 'bad'); rec.inp.classList.remove('good', 'bad'); rec.mark.textContent = '';
+          return;
+        }
+        var good = isGood(rec);
+        rec.card.classList.remove('good', 'bad'); rec.card.classList.add(good ? 'good' : 'bad');
+        rec.inp.classList.remove('good', 'bad'); rec.inp.classList.add(good ? 'good' : 'bad');
+        rec.mark.textContent = good ? '✓' : '✗'; rec.mark.className = 'mark ' + (good ? 'good' : 'bad');
+        if (good) pts++;
+        else { rec.fails++; if (rec.fails >= 2){ rec.ans.textContent = answerText(rec); rec.ans.hidden = false; } }
+      });
+      scores[key] = pts; $(opts.res).textContent = 'Résultat : ' + pts + ' / ' + totals[key];
+      $(opts.show).hidden = false; updateTotal();
+    }
+    function reveal(){
+      recs.forEach(function(rec){ rec.ans.textContent = answerText(rec); rec.ans.hidden = false; });
+      $(opts.show).hidden = true;
+    }
+    $(opts.check).addEventListener('click', check);
+    $(opts.show).addEventListener('click', function(){ if (scores[key] === null) check(); reveal(); });
+    $(opts.reset).addEventListener('click', render);
+    render();
+  }
+
+  // Partie A : les deux prix du reportage (6,71 et 4,70) + 8 prix au hasard
+  buildPart('A', { root: 'partA', res: 'resA', check: 'checkA', show: 'showA', reset: 'resetA',
+                   listen: true, fixed: [671, 470], minEuro: 1 });
+  buildPart('B', { root: 'partB', res: 'resB', check: 'checkB', show: 'showB', reset: 'resetB',
+                   listen: false, fixed: [], minEuro: 2 });
+})();
+</script>
+</body>
+</html>
